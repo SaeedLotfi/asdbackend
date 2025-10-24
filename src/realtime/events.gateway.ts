@@ -19,7 +19,6 @@ export class EventsGateway {
   @UseGuards(JwtWsGuard)
   @SubscribeMessage('item.move')
   async onItemMove(@MessageBody() payload: { id: string; x: number; y: number }, @ConnectedSocket() client: Socket) {
-    console.log('onItemMove payload:', payload);
     const updated = await this.items.updateCoords(payload.id, payload.x, payload.y);
     client.broadcast.emit('item.updated', updated);
     client.emit('item.updated', updated);
